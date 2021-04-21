@@ -14,6 +14,13 @@ function createWoofInDatabase (woof) { // eslint-disable-line no-unused-vars
 	  created_at: woof.created_at,
 	  text: woof.text
 	})
+	.then(function(docRef) {
+		console.log("Document written with ID: ", docRef.id);
+		addWoofRow(docRef.id,woof);
+	})
+	.catch(function(error) {
+		console.error("Error adding document: ", error);
+	});
     
 }
 
@@ -31,13 +38,10 @@ function readWoofsInDatabase () {
 	.then(function (snapshot) {
     snapshot.forEach(function (doc) {
       woofs[doc.id] = doc.data();
-	  var each_doc = {created_at: doc.data().created_at,text:doc.data().text}
-	  addWoofRow(doc.id,each_doc);
+	  addWoofRow(doc.id,{created_at: doc.data().created_at,text:doc.data().text});
     })
      
 })
-
-
 }
 
 
@@ -50,7 +54,10 @@ function updateWoofInDatabase (woofKey, woofText) { // eslint-disable-line no-un
 		text: woofText
 	},{ merge: true })
 	.then(() => {
+		
 		console.log("Document successfully written!");
+		updateWoofRow(woofKey,{text:woofText});
+		console.log("Document successfully written 1!");
 	})
 	.catch((error) => {
 		console.error("Error writing document: ", error);
@@ -63,26 +70,25 @@ function updateWoofInDatabase (woofKey, woofText) { // eslint-disable-line no-un
 function deleteWoofFromDatabase (woofKey) { // eslint-disable-line no-unused-vars
   // TODO delete the document from the collection
   db.collection("woofs").doc(woofKey).delete();
-
+  deleteWoofRow (woofKey);
   //firebase.collection('woofs').doc(woofKey).delete();
 }
 
 // Load all of the data
 readWoofsInDatabase()
 
-
 db.collection('woofs')
   .onSnapshot(function (snapshot) {
     snapshot.docChanges().forEach(function (change) {
       const woof = change.doc.data()
       if (change.type === 'added') {
-        console.log("Added.");
+        console.log("Master Added change.");
         
       } else if (change.type === 'modified') {
-		console.log("Modified.");
+		console.log("Master modified change.");
 
       } else if (change.type === 'removed') {
-		console.log("Deleted.");
+		console.log("Master delete change.");
 
       }
     })
