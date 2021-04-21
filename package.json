@@ -11,7 +11,7 @@
     "build:standard": "standard clicky.js --fix",
 	"build:sass": "node-sass source/scss/styles.scss -o=compiled/css  --source-map=true",
     "build": "run-s build:*",
-    "deploy:surge": "surge --project . --domain https://ishitasrivastav-js-package-json.surge.sh/",
+    "deploy:surge": "surge --project . --domain https://ishitasrivastav-js-firebase-in.surge.sh/",
     "deploy": "run-s build:* deploy:surge"
   },
   "devDependencies": {
