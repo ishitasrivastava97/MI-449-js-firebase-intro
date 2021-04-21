@@ -1,0 +1,27 @@
+{
+  "name": "json-package-intro",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:sass": "node-sass source/scss/styles.scss --watch -o=compiled/css  --source-map=true",
+    "dev:server": "live-server",
+    "dev": "run-p dev:*",
+
+    "build:htmlhint": "htmlhint index.html",
+    "build:stylelint": "stylelint source/scss --fix",
+    "build:standard": "standard clicky.js --fix",
+	"build:sass": "node-sass source/scss/styles.scss -o=compiled/css  --source-map=true",
+    "build": "run-s build:*",
+    "deploy:surge": "surge --project . --domain https://ishitasrivastav-js-package-json.surge.sh/",
+    "deploy": "run-s build:* deploy:surge"
+  },
+  "devDependencies": {
+    "htmlhint": "^0.11.0",
+    "live-server": "^1.2.1",
+    "node-sass": "^4.14.1",
+    "npm-run-all": "^4.1.5",
+    "standard": "^14.3.4",
+    "stylelint": "^13.12.0",
+    "stylelint-config-standard": "^20.0.0",
+    "surge": "^0.21.7"
+  }
+}

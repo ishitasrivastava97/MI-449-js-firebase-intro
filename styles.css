@@ -1,9 +1,5 @@
-#woof-template {
-  display: none;
-}
-
-.main {
-  background-color: #effbfb !important;
+main.container > .main {
+  background-color: #effbfb;
 }
 
 .row {

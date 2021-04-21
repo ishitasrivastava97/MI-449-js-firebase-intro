@@ -5,6 +5,12 @@
   <title>🐾 Woofer</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="styles.css">
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js"></script>
+	<script src="https://momentjs.com/downloads/moment.min.js"></script>
+
+	
 </head>
 <body>
   <main class="container">
@@ -23,14 +29,9 @@
     </article>
   </main>
 
-  <script src="/__/firebase/8.4.1/firebase-app.js"></script>
-  <script src="/__/firebase/init.js"></script>
-
-  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
   
-  <script src="https://momentjs.com/downloads/moment.min.js"></script>
-  <script src="woofer-ui.js"></script>
-  <script src="woofer-db.js"></script>
+
+ 
 
   <template id="woof-template">
     <div class="row">
@@ -52,5 +53,9 @@
       </span>
     </div>
   </template>
+  <script src="app.js"></script>
+  <script src="woofer-ui.js"></script>
+  <script src="woofer-db.js"></script>
+
 </body>
 </html>
