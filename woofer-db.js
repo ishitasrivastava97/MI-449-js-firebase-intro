@@ -10,18 +10,8 @@ console.log("woofer-db.js start");
 // CREATE a new woof in the database
 function createWoofInDatabase (woof) { // eslint-disable-line no-unused-vars
   // TODO create a new document in the collection
-	db.collection('woofs').add({
-	  created_at: woof.created_at,
-	  text: woof.text
-	})
-	.then(function(docRef) {
-		console.log("Document written with ID: ", docRef.id);
-		addWoofRow(docRef.id,woof);
-	})
-	.catch(function(error) {
-		console.error("Error adding document: ", error);
-	});
-    
+	db.collection('woofs').add(woof);
+   
 }
 
 // READ from Firestore when woofs are added, modified, or removed
@@ -34,14 +24,29 @@ function readWoofsInDatabase () {
   // TODO read added, modified, and removed documents
   
 	db.collection('woofs')
-	.get()
-	.then(function (snapshot) {
-    snapshot.forEach(function (doc) {
-      woofs[doc.id] = doc.data();
-	  addWoofRow(doc.id,{created_at: doc.data().created_at,text:doc.data().text});
-    })
-     
-})
+	  .onSnapshot(function (snapshot) {
+
+		snapshot.docChanges().forEach(function (change) {
+		  
+		  const woof = change.doc.data();
+		  const woofKey = change.doc.id;
+          //alert(woof.text);
+		  //alert(woofs[change.doc.id].created_at);
+		  //alert(woofs[change.doc.id].text);
+		  //alert(change.type);
+		  
+		  if (change.type === 'added') {
+			addWoofRow(woofKey,woof);
+			
+		  } else if (change.type === 'modified') {
+			updateWoofRow(woofKey,woof);
+
+		  } else if (change.type === 'removed') {
+			deleteWoofRow (woofKey);
+
+		  }
+		})
+	  })
 }
 
 
@@ -55,9 +60,9 @@ function updateWoofInDatabase (woofKey, woofText) { // eslint-disable-line no-un
 	},{ merge: true })
 	.then(() => {
 		
-		console.log("Document successfully written!");
-		updateWoofRow(woofKey,{text:woofText});
-		console.log("Document successfully written 1!");
+
+		//updateWoofRow(woofKey,{text:woofText});
+		console.log("Document successfully written !");
 	})
 	.catch((error) => {
 		console.error("Error writing document: ", error);
@@ -70,26 +75,14 @@ function updateWoofInDatabase (woofKey, woofText) { // eslint-disable-line no-un
 function deleteWoofFromDatabase (woofKey) { // eslint-disable-line no-unused-vars
   // TODO delete the document from the collection
   db.collection("woofs").doc(woofKey).delete();
-  deleteWoofRow (woofKey);
-  //firebase.collection('woofs').doc(woofKey).delete();
+  //deleteWoofRow (woofKey);
+
 }
 
 // Load all of the data
 readWoofsInDatabase()
 
-db.collection('woofs')
-  .onSnapshot(function (snapshot) {
-    snapshot.docChanges().forEach(function (change) {
-      const woof = change.doc.data()
-      if (change.type === 'added') {
-        console.log("Master Added change.");
-        
-      } else if (change.type === 'modified') {
-		console.log("Master modified change.");
 
-      } else if (change.type === 'removed') {
-		console.log("Master delete change.");
 
-      }
-    })
-  })
+
+
